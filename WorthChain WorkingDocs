@@ -1,0 +1,99 @@
+SIMULATION ONLY — SIMULATED EVENTS, REAL PROOFS · NO REAL FLIGHT · NO REAL DEVICE · NO LIVE SYSTEM
+WORTHCHAIN · PHASE 0 · STEP 0.2 DEMONSTRATION
+Proving what happened, without trusting who says so.
+This demo produces real IOADA proofs on our end — chained, signed records for a simulated drone delivery and a simulated IoT gate event. Anyone can verify them from GENESIS, without trusting the operator. The events are simulated. The cryptography is not.
+
+Demo signer
+generating key…
+Domain
+WorthChain · v1
+Chain ID (demo)
+31337
+Verifier (demo, not deployed)
+0x0000…dEaD
+Spec
+v0.1 · 22 Nov 2026
+A fresh demo-only key is generated in your browser on each load. It is never a real operator key. One demonstration chain holds both events, in the order they occur — in practice, separate subjects would normally carry separate chains.
+Run the events
+Watch each IOADA record build field by field — Identity, Origin, Authorization, Decision, Action — then seal into the chain with a hash and signature.
+1 · SIMULATED DRONE DELIVERY — ROUTE R-114, TAMPA
+Departure
+Corridor entry
+pause & confirm
+En route
+Drop point
+▶ Run the flight
+
+2 · SIMULATED IOT GATE EVENT — GC-2026-011
+Same record, different rider. A gate controller checks a credential against access policy P-7 and the delivery-window rule, then opens.
+▶ Run the IoT event
+
+The Decision field is the discipline: at the split where a consequential choice divides, the system pauses and confirms — then is firm when it acts, with no near-miss tolerance.
+The chain, visible
+Hash = SHA-256(prevHash + canonicalJSON(body)) — canonical JSON per RFC 8785 (keys sorted). Signature is verified separately from the chain.
+GENESIS — this chain starts here
+No records yet. Run the flight above to seal Record 0.
+VERIFY, IN FRONT OF YOU
+Verify this chain
+Reset chain
+Not verified yet
+Verification recomputes every hash from GENESIS, checks sequence and links, checks completeness, and verifies each signature against the demo signer.
+TAMPER TEST
+Edit one character of a sealed record without re-sealing it, then verify. The chain should fail at that link — and the failure is the proof it detects alteration.
+Record to tamper Run an event first
+Action field (edit me)
+Apply tamper (do not re-seal)
+Restore original
+EXPORT & PORTABILITY
+Export the chain as JSON, then re-import it. If the hashes reproduce identically, the format is portable — the same bytes verify in another tool.
+↓ Export chain JSON
+Copy JSON
+Re-import a chain file
+
+What “proof” means here — and what it doesn’t
+CHECK
+WHAT IT PROVES
+WHAT IT DOES NOT PROVE
+Hash chain verifies
+Spec §3.3
+No record was edited, reordered, or dropped after sealing.
+That the events happened. A simulated flight’s chain verifies perfectly and describes nothing real.
+Signature verifies to the demo signer
+Spec §5 — EIP-712 model, demo ECDSA seal
+The claimed identity signed this record’s content at this nonce.
+That the content is true. A signer can sign a false statement.
+Export → re-import reproduces identical hashes
+The record format is portable — canonical JSON means key order can’t break verification.
+That any outside system accepts the format. Acceptance is a Phase 1/2 matter.
+Step 3 in a full verification (spec §7) is checking the subject: confirm the identifier in the record matches the identifier the subject actually carries — Remote ID serial, N-number, device ID, or content hash. WorthChain attaches to the existing mark; it does not issue a competing identity. A SCITT receipt (RFC 9943 / RFC 9942), where one exists, is checked after the signature — registration is optional in v0.1 and no Transparency Service is chosen yet.
+Spec worked example — §9
+The spec publishes two records with hashes anyone can recompute. This page recomputes them live with the same construction, so you don’t have to take the document’s word for it.
+Record 0 (drone)
+1158e8a2dad272b29f97fbe4b0f3d0447df7a7498c7f1e3b941ff2e8d121fa3f
+Record 1 (IoT gate)
+4fa22ebb6ac09b13b7777f7e1bf55ad7900394bae62e9d43eca541a4a90852fd
+Recomputed here
+computing…
+Recompute spec example
+The five fields
+Identity
+Which system, operator, and responsible person — keyed to the existing mark.
+Origin
+Manufacturer, software, control station, place and time at origination.
+Authorization
+The authority relied on. A vetting result may be carried; underlying vetting data is never published.
+Decision
+Human, autonomous, or human-approved autonomous — the rule followed, and the pause-and-confirm at the split.
+Action
+What actually happened, time and place, observable result — the End Transmission Event, verifiable by outsiders.
+Complete or flagged incomplete: a missing field is shown as missing (completeness: "incomplete", missing fields named in the payload). A partial record presented as complete fails the discipline. Subjects in v0.1: drone · evtol · iot-device · digital-content. Vessel subjects are reserved — the maritime attach point is an open research question.
+Demo build notes
+Signing key
+Fresh ECDSA P-256 keypair generated in-browser per load via Web Crypto; address shown above is the first 40 hex chars of SHA-256(public key). Demo-only, labelled, never a real operator key. The seal follows the spec §5 model — sign the record digest, verify by recovery/verification against the claimed identity, nonce strictly increasing per identity from 1. Production records use the EIP-712 typed struct (IOADA) with chainId + verifyingContract, both still TBD in spec §10.
+Canonicalization
+RFC 8785-style canonical JSON implemented here (recursive key sort, no insignificant whitespace) for every hash input — closing the awareness app's known JSON.stringify gap noted in spec §3.2.
+Open items (§10)
+Operating entity: OPEN, Jamie's call, funds-gated — the demo does not depend on it. chainId / verifyingContract: demo values above, not production. Transparency Service: not chosen.
+SIMULATION ONLY — simulated events, real proofs. No real flight, no real device, no live system, no on-chain transaction, no Transparency Service registration. This is a Phase 0 demonstration of the WorthChain IOADA Record Specification v0.1 (draft, 22 November 2026) — not a filing, standard, endorsement, or claim of adoption by any agency, operator, or platform. It does not claim Part 108 authority and names no pilot, sponsor, or customer.
+WorthChain records and attests the NDAA compliance of the drones it tracks — WorthChain itself is not a drone, so the NDAA procurement rules do not apply to it directly. The chain detects tampering; it does not prevent it. WorthChain is a provenance log, not a cryptocurrency and not a control system.
+Author: Jamie S. Robbins, dba ACEMEDIA DIGITAL VISION, Tampa, Florida · IOADA = Identity, Origin, Authorization, Decision, Action.
